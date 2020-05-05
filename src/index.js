@@ -8,7 +8,15 @@ const path = require("path");
 
 const client = new Twit(config);
 
-const neko_endpoint = `https://nekobot.xyz/api/image?type=neko`;
+const { createUniqueId } = require("./utils");
+
+const waifu_endpoint = `https://nekobot.xyz/api/image?type=neko`;
+
+// 1000 miliseconds = 1 second
+// * 60 = 60 seconds = 1 minute
+// * 15 = 15 minutes
+// Time interval: 15 minutes
+const timeInterval = 1000 * 30;
 
 // To download and save image from url
 const download = async (url, image_path) => {
@@ -32,14 +40,14 @@ const getBase64File = (file_path) => {
   return fs.readFileSync(file_path, { encoding: "base64" });
 };
 
-const NekoBotLife = async () => {
+const WaifuBotLife = async () => {
   try {
     // ========================================================
     // NEKOBOT API
     // ========================================================
 
     // GET IMAGE DATA FROM NEKO API
-    const response = await axios.get(neko_endpoint);
+    const response = await axios.get(waifu_endpoint);
 
     // ========================================================
     // IMAGE
@@ -77,44 +85,33 @@ const NekoBotLife = async () => {
     const imageData = getBase64File(imageWebpPath);
 
     // UPLOAD IMAGE TO TWITTER API
-    const media = await new Promise((resolve, reject) => {
-      client.post(
-        "/media/upload",
-        {
-          media: imageData,
-        },
-        function (error, media, response) {
-          if (error) return reject(error);
+    client.post("media/upload", { media: imageData }, function (
+      error,
+      media,
+      response
+    ) {
+      if (error) {
+        console.log(error);
+      } else {
+        const status = {
+          status: "#StayAtHome",
+          media_ids: media.media_id_string,
+        };
 
-          console.log("check 1");
-          console.log(response);
-          resolve(media);
-        }
-      );
-    });
+        client.get("media/upload");
 
-    const tweetData = {
-      status: "Tweet with NodeJS",
-      media_ids: media.media_id_string,
-    };
-
-    await new Promise((resolve, reject) => {
-      client.post("statuses/update", tweetData, function (
-        error,
-        tweet,
-        response
-      ) {
-        if (error) {
-          reject(error);
-          console.log(error);
-        } else {
-          console.log("check 2");
-          console.log(tweet);
-          console.log(response);
-          console.log("Successfully tweeted an image!");
-          resolve(tweet);
-        }
-      });
+        client.post("statuses/update", status, function (
+          error,
+          tweet,
+          response
+        ) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Successfully tweeted an image!");
+          }
+        });
+      }
     });
 
     // ========================================================
@@ -133,17 +130,10 @@ const NekoBotLife = async () => {
     console.log(datelog);
 
     console.log(error);
+  } finally {
+    setTimeout(WaifuBotLife, timeInterval);
   }
 };
 
-// 1000 miliseconds = 1 second
-// * 60 = 60 seconds = 1 minute
-// * 15 = 15 minutes
-// Time interval: 15 minutes
-const timeInterval = 1000 * 60 * 15;
-
-// Every [timeInterval] execute NekoBotLife to create a Tweet
-setInterval(NekoBotLife, timeInterval);
-
-// Init Nekobot life
-NekoBotLife();
+// Init Waifu Life
+WaifuBotLife();
