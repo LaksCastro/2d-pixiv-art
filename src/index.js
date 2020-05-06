@@ -1,7 +1,7 @@
 // ===========================================================================================
 // This is a Entrypoint, all bot work with the imported modules here
 // ===========================================================================================
-(async function EntryPoint() {
+(async () => {
   const TwitterClient = require("./client/twitter");
   await TwitterClient.initialize();
 

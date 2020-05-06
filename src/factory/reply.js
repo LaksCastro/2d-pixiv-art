@@ -14,7 +14,7 @@ const TwitterReplyFactory = () => {
   const Console = ConsoleFactory();
 
   // ===========================================================================================
-  // This function is a Wrapper for execute the following steps:
+  // This function is a Wrapper for execute the following tasks:
   // - Get URL of random image from ImageAPI (using ImageApi Factory)
   // - Download the image and save in local disk in /temp folder (using Download Factory)
   // - Clone the image but in webp format (using Converter Factory)
@@ -42,9 +42,6 @@ const TwitterReplyFactory = () => {
 
       TwitterApi.requestReply(imageData, getStatus, onComplete);
 
-      FileManager.del(imagePath);
-      FileManager.del(imageWebpPath);
-
       onComplete();
     } catch (error) {
       const date = new Date();
@@ -56,6 +53,9 @@ const TwitterReplyFactory = () => {
 
       Console.error(datelog);
       Console.error(error);
+    } finally {
+      FileManager.del(imagePath);
+      FileManager.del(imageWebpPath);
     }
   };
 
