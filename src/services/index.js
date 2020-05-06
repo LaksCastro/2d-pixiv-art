@@ -1,4 +1,4 @@
-const client = require("../client").getClient();
+let client = null;
 
 // To Make Http Requests
 const axios = require("axios");
@@ -51,6 +51,8 @@ const getBase64File = (file_path) => {
 // The entire life cycle of the bot is in this function
 const replyTo = async (getStatus = null, afterAll = () => {}) => {
   if (!getStatus) throw new Error("Function to get tweet status is necessary");
+
+  client = require("../client").getClient();
 
   try {
     // ========================================================
