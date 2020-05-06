@@ -1,7 +1,7 @@
 const { get } = require("../client");
 
 const TwitterApiFactory = () => {
-  const requestReply = (imageData, getStatus, onComplete = () => {}) => {
+  const requestReply = (imageData, getStatus) => {
     let client = get();
 
     client.post("media/upload", { media: imageData }, function (error, media) {
@@ -12,8 +12,6 @@ const TwitterApiFactory = () => {
 
         client.post("statuses/update", status, function (error) {
           if (error) return console.log(error);
-
-          onComplete();
         });
       }
     });
