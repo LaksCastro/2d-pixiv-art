@@ -10,7 +10,7 @@ const PixivApiFactory = () => {
   const History = HistoryFactory();
   const Console = ConsoleFactory();
 
-  const client = require("../client/pixiv").get();
+  const client = require("../client/pixiv");
 
   const api_name = "pixiv_api";
 
@@ -111,17 +111,23 @@ const PixivApiFactory = () => {
   // - Return the illustration (illustration = image)
   // ===========================================================================================
   const get = async () => {
+    await client.refresh();
+
+    const clientaInstance = client.get();
+
     const {
       user: { id: userId },
-    } = client.authInfo();
+    } = clientaInstance.authInfo();
 
-    const { userPreviews: followers } = await client.userFollowing(userId);
+    const { userPreviews: followers } = await clientaInstance.userFollowing(
+      userId
+    );
 
     const followerToGetIllust = followers[random(0, followers.length - 1)];
 
     const { id, name } = followerToGetIllust.user;
 
-    const response = await client.userIllusts(id);
+    const response = await clientaInstance.userIllusts(id);
 
     return { ...response, author: name };
   };

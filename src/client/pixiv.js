@@ -7,18 +7,21 @@ const { PixivConfig } = require("../config");
 const PixivClientInstanceFactory = () => {
   let client = null;
 
+  const refresh = async () => await client.login();
+
   const initialize = async () => {
     if (client) throw new Error("A Pixiv Client Instance Is Already Declared");
 
     client = new Pixiv(...PixivConfig);
 
-    await client.login();
+    await refresh();
   };
 
   const get = () => client;
 
   const public = {
     initialize,
+    refresh,
     get,
   };
 
