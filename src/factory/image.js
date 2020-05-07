@@ -1,11 +1,10 @@
-const { random } = require("../utils");
-
 const ImageApiFactory = () => {
-  const {
-    NekoBotApiFactory,
-    PixivApiFactory,
-    ConsoleFactory,
-  } = require("./index");
+  const { random } = require("../utils");
+
+  const NekoBotApiFactory = require("./nekobot");
+  const PixivApiFactory = require("./pixiv");
+  const ConsoleFactory = require("./console");
+
   const Console = ConsoleFactory();
 
   // const availableApis = [NekoBotApiFactory, PixivApiFactory];

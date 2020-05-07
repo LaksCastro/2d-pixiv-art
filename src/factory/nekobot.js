@@ -1,9 +1,10 @@
 const axios = require("axios");
 const path = require("path");
-const { random } = require("../utils");
 
 const NekoBotApiFactory = () => {
-  const { DownloadFactory } = require("./index");
+  const { random } = require("../utils");
+
+  const DownloadFactory = require("./download");
   const Download = DownloadFactory();
 
   let nekoBotTypes = ["neko", "hmidriff", "coffee", "kemonomimi", "holo"];

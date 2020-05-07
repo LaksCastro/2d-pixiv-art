@@ -1,11 +1,9 @@
 const TwitterReplyFactory = () => {
-  const {
-    TwitterApiFactory,
-    ImageApiFactory,
-    ConverterFactory,
-    FileManagerFactory,
-    ConsoleFactory,
-  } = require("./index");
+  const TwitterApiFactory = require("./twitter");
+  const ImageApiFactory = require("./image");
+  const ConverterFactory = require("./converter");
+  const FileManagerFactory = require("./file");
+  const ConsoleFactory = require("./console");
 
   const ImageApi = ImageApiFactory();
   const Converter = ConverterFactory();

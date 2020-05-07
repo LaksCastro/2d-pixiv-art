@@ -1,7 +1,7 @@
 const TwitterApiFactory = () => {
   const { get } = require("../client/twitter");
 
-  const { ConsoleFactory } = require("./index");
+  const ConsoleFactory = require("./console");
   const Console = ConsoleFactory();
 
   let client = null;
