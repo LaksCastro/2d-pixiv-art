@@ -9,8 +9,7 @@ const ImageApiFactory = () => {
   const Console = ConsoleFactory();
   const History = HistoryFactory();
 
-  // const availableApis = [NekoBotApiFactory, PixivApiFactory];
-  const availableApis = [PixivApiFactory];
+  const availableApis = [NekoBotApiFactory, PixivApiFactory];
 
   // ===========================================================================================
   // This function is a Wrapper for execute the following steps:

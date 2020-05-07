@@ -14,13 +14,19 @@ const TwitterApiFactory = () => {
   const requestReply = (imageData, getStatus, onComplete = () => {}) => {
     client = get();
 
-    client.post("media/upload", { media: imageData }, function (error, media) {
+    const { base64, imageAuthor, availableIn } = imageData;
+
+    client.post("media/upload", { media: base64 }, function (error, media) {
       if (error) {
         Console.error(error);
       } else {
-        const status = getStatus(media);
+        let tweet = getStatus(media);
 
-        client.post("statuses/update", status, function (error) {
+        if (imageAuthor)
+          tweet.status = `${tweet.status}\nMade with ❤️ by ${imageAuthor}\nAvailable in ${availableIn}`;
+        else tweet.status = `${tweet.status}\nAvailable in ${availableIn}`;
+
+        client.post("statuses/update", tweet, function (error) {
           if (error) return Console.error(error);
 
           onComplete(media);

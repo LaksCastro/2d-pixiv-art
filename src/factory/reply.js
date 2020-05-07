@@ -35,6 +35,8 @@ const TwitterReplyFactory = () => {
       const {
         imagePath: imgPath,
         imageWebpPath: imgWebPath,
+        imageAuthor,
+        availableIn,
       } = await ImageApi.get();
 
       imagePath = imgPath;
@@ -43,7 +45,11 @@ const TwitterReplyFactory = () => {
       Console.write("3. Converting image to webp...");
       await Converter.convert(imagePath, imageWebpPath, "webp");
 
-      const imageData = FileManager.getBase64(imageWebpPath);
+      const imageData = {
+        imageAuthor,
+        availableIn,
+        base64: FileManager.getBase64(imageWebpPath),
+      };
 
       Console.write("4. The request was sent to the Twitter server");
 

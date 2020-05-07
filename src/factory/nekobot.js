@@ -5,21 +5,29 @@ const NekoBotApiFactory = () => {
   const { random } = require("../utils");
 
   const DownloadFactory = require("./download");
-  const Download = DownloadFactory();
+  const HistoryFactory = require("./history");
+  const ConsoleFactory = require("./console");
 
-  let nekoBotTypes = ["neko", "hmidriff", "coffee", "kemonomimi", "holo"];
+  const Download = DownloadFactory();
+  const History = HistoryFactory();
+  const Console = ConsoleFactory();
+
+  let nekoBotTypes = ["neko", "hmidriff", "kemonomimi"];
 
   let getNekoBotEndpoint = (type) =>
     `https://nekobot.xyz/api/image?type=${type}`;
 
   const api_name = "nekobot_api";
 
+  let maxTry = 30;
+  let currentTry = 0;
+
   const generateResult = async (response) => {
     const {
       data: { message: imageUrl, img_name: imageFilename },
     } = response;
 
-    const imageId = `${imageUrl}--${imageFilename}`;
+    const imageId = `neko__bot--${imageUrl}`;
 
     const imageName = imageFilename
       .split(".")
@@ -45,6 +53,7 @@ const NekoBotApiFactory = () => {
       imageId,
       imageAuthor: null,
       source: api_name,
+      availableIn: imageUrl,
     };
 
     return result;
@@ -62,6 +71,31 @@ const NekoBotApiFactory = () => {
     const endpoint = getNekoBotEndpoint(randomType);
 
     const response = await axios.get(endpoint);
+
+    const {
+      data: { message: imageUrl },
+    } = response;
+
+    const imageId = `neko__bot--${imageUrl}`;
+
+    const history = History.getHistory();
+
+    // To prevent to send duplicated images
+    if (history.some((img) => img.imageId === imageId)) {
+      currentTry++;
+
+      if (maxTry < currentTry) {
+        Console.write(
+          Console.yellow("This artist has a loot of arts twitted, log:")
+        );
+        Console.write(Console.yellow(response));
+        throw new Error("Something is wrong, verify this");
+      }
+
+      return await axios.get(endpoint);
+    }
+
+    currentTry = 0;
 
     return response;
   };

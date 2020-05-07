@@ -5,12 +5,17 @@ const PixivApiFactory = () => {
 
   const DownloadFactory = require("./download");
   const HistoryFactory = require("./history");
+  const ConsoleFactory = require("./console");
   const Download = DownloadFactory();
   const History = HistoryFactory();
+  const Console = ConsoleFactory();
 
   const client = require("../client/pixiv").get();
 
   const api_name = "pixiv_api";
+
+  let maxTry = 30;
+  let currentTry = 0;
 
   const generateResult = async (response) => {
     const index = random(0, response.illusts.length - 1);
@@ -22,8 +27,21 @@ const PixivApiFactory = () => {
     const history = History.getHistory();
 
     // To prevent to send duplicated images
-    if (history.some((img) => img.imageId === imageId))
+    if (history.some((img) => img.imageId === imageId)) {
+      currentTry++;
+
+      if (maxTry < currentTry) {
+        Console.write(
+          Console.yellow("This artist has a loot of arts twitted, log:")
+        );
+        Console.write(Console.yellow(response));
+        throw new Error("Something is wrong, verify this");
+      }
+
       return await generateResult(response);
+    }
+
+    currentTry = 0;
 
     const { large: imageUrl } = imageSizes;
 
@@ -60,6 +78,7 @@ const PixivApiFactory = () => {
       imageId,
       imageAuthor: response.author,
       source: api_name,
+      availableIn: `https://www.pixiv.net/en/artworks/${imageId}`,
     };
 
     return result;
@@ -67,10 +86,10 @@ const PixivApiFactory = () => {
 
   const get = async () => {
     const {
-      user: { id },
+      user: { id: userId },
     } = client.authInfo();
 
-    const { userPreviews: followers } = await client.userFollowing(id);
+    const { userPreviews: followers } = await client.userFollowing(userId);
 
     const followerToGetIllust = followers[random(0, followers.length - 1)];
 
