@@ -11,7 +11,7 @@ const TwitterApiFactory = () => {
   // @param imageData - Image Base 64 File
   // @param getStatus - Function for to convert raw media data in a tweet parameters
   // ===========================================================================================
-  const requestReply = (imageData, getStatus) => {
+  const requestReply = (imageData, getStatus, onComplete = () => {}) => {
     client = get();
 
     client.post("media/upload", { media: imageData }, function (error, media) {
@@ -22,6 +22,8 @@ const TwitterApiFactory = () => {
 
         client.post("statuses/update", status, function (error) {
           if (error) return Console.error(error);
+
+          onComplete(media);
         });
       }
     });

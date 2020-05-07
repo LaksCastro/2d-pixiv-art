@@ -1,7 +1,8 @@
 const AutomaticReplyFactory = () => {
   const { get } = require("../client/twitter");
 
-  const { TwitterReplyFactory, ConsoleFactory } = require("../factory");
+  const TwitterReplyFactory = require("../factory/reply");
+  const ConsoleFactory = require("../factory/console");
 
   const TwitterReply = TwitterReplyFactory();
   const Console = ConsoleFactory();

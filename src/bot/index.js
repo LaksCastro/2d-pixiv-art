@@ -1,21 +1,19 @@
 const BotFactory = () => {
   const AutomaticTweetFactory = require("./tweet");
   const AutomaticReplyFactory = require("./quote");
-  const HistoryFactory = require("../factory/history");
+  // const HistoryFactory = require("../factory/history");
 
-  const History = HistoryFactory();
+  // const History = HistoryFactory();
 
   // ===========================================================================================
   // This function is a Wrapper for to inialize all bot features
   // ===========================================================================================
   const initialize = () => {
-    // const AutomaticTweet = AutomaticTweetFactory();
-    // const AutomaticReply = AutomaticReplyFactory();
+    const AutomaticTweet = AutomaticTweetFactory();
+    const AutomaticReply = AutomaticReplyFactory();
 
-    // AutomaticTweet.enable();
-    // AutomaticReply.enable();
-
-    History.push();
+    AutomaticTweet.enable();
+    AutomaticReply.enable();
   };
 
   const public = {

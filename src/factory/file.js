@@ -10,7 +10,9 @@ const FileManagerFactory = () => {
 
   const create = (path) => fs.createWriteStream(path);
 
-  const read = (path) => fs.readFileSync(path);
+  const read = (path) => fs.readFileSync(path, { encoding: "utf-8" });
+
+  const write = (path, content) => fs.writeFileSync(path, content);
 
   const getBase64 = (path) => fs.readFileSync(path, { encoding: "base64" });
 
@@ -18,8 +20,8 @@ const FileManagerFactory = () => {
     del,
     create,
     read,
+    write,
     getBase64,
-    path,
   };
 
   return Object.freeze(public);

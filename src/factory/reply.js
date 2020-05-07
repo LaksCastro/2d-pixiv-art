@@ -48,8 +48,6 @@ const TwitterReplyFactory = () => {
       Console.write("4. The request was sent to the Twitter server");
 
       TwitterApi.requestReply(imageData, getStatus, onComplete);
-
-      onComplete();
     } catch (error) {
       const date = new Date();
 

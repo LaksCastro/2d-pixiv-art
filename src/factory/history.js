@@ -1,17 +1,19 @@
 const path = require("path");
 
 const HistoryFactory = () => {
-  const { FileManagerFactory } = require("./index");
+  const FileManagerFactory = require("./file");
   const FileManager = FileManagerFactory();
 
   const historyPath = path.normalize(
-    path.join(__dirname, "..", "history", "index.js")
+    path.join(__dirname, "..", "history.json")
   );
 
   const push = (imgData) => {
-    const currentHistory = FileManager.read(historyPath);
+    const currentHistory = JSON.parse(FileManager.read(historyPath));
 
-    console.log(currentHistory);
+    currentHistory.push(imgData);
+
+    FileManager.write(historyPath, JSON.stringify(currentHistory));
   };
 
   const remove = (imgData) => {};

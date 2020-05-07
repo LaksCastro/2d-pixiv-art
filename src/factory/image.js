@@ -4,8 +4,10 @@ const ImageApiFactory = () => {
   const NekoBotApiFactory = require("./nekobot");
   const PixivApiFactory = require("./pixiv");
   const ConsoleFactory = require("./console");
+  const HistoryFactory = require("./history");
 
   const Console = ConsoleFactory();
+  const History = HistoryFactory();
 
   // const availableApis = [NekoBotApiFactory, PixivApiFactory];
   const availableApis = [PixivApiFactory];
@@ -34,6 +36,8 @@ const ImageApiFactory = () => {
     Console.write("2. Downloading Image...");
 
     const result = await Api.generateResult(response);
+
+    History.push(result);
 
     return result;
   };

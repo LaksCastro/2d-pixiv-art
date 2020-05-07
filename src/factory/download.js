@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const DownloadFactory = () => {
-  const { FileManagerFactory } = require("./index");
+  const FileManagerFactory = require("./file");
 
   const FileManager = FileManagerFactory();
 
