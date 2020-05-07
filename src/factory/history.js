@@ -1,6 +1,6 @@
 const path = require("path");
 
-const ImagesHistoryFactory = () => {
+const HistoryFactory = () => {
   const { FileManagerFactory } = require("./index");
   const FileManager = FileManagerFactory();
 

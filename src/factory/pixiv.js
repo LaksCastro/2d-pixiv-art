@@ -1,10 +1,8 @@
-// const axios = require("axios");
 const path = require("path");
-// const pixivImg = require("pixiv-img");
 const { random } = require("../utils");
 
 const PixivApiFactory = () => {
-  const { DownloadFactory } = require("./index");
+  const DownloadFactory = require("./download");
   const Download = DownloadFactory();
 
   const client = require("../client/pixiv").get();
