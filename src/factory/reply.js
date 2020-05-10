@@ -48,7 +48,7 @@ const TwitterReplyFactory = () => {
       const imageData = {
         imageAuthor,
         availableIn,
-        base64: FileManager.getBase64(imagePath),
+        base64: FileManager.getBase64(imageWebpPath),
       };
 
       Console.write("4. The request was sent to the Twitter server");
